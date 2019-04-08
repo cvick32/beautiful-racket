@@ -15,5 +15,5 @@
       (lexer
        [(char-set "><-.,+[]") lexeme]
        [any-char (next-token)]))
-    (bf-lexer port))  
+    (bf-lexer port)) 
   next-token)

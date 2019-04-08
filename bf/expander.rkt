@@ -84,19 +84,22 @@ Going to implement an imperative then a functional version
 (provide bf-op)
 
 (define (current-byte arr ptr) (vector-ref arr ptr))
+
+
 (define (set-current-byte arr ptr val)
-  (define new-arr (vector-copy arr))
-  (vector-set! new-arr ptr val)
-  new-arr)
+  (vector-set! arr ptr val)
+  arr)
 
 (define (gt arr ptr) (list arr (add1 ptr)))
 (define (lt arr ptr) (list arr (sub1 ptr)))
 
-(define (plus arr ptr) (list (set-current-byte (add1 (current-byte arr ptr))) ptr))
-(define (minus arr ptr) (list (set-current-byte (sub1 (current-byte arr ptr))) ptr))
+(define (plus arr ptr) (list (set-current-byte arr ptr (add1 (current-byte arr ptr)))))
+(define (minus arr ptr) (list (set-current-byte arr ptr (sub1 (current-byte arr ptr)))))
 
-(define (period arr ptr) (write-byte (current-byte)))
-(define (comma arr ptr) (list (set)
+(define (period arr ptr)
+  (write-byte (current-byte arr ptr))
+  (list arr ptr))
+(define (comma arr ptr) (list (set-current-byte arr ptr (read-byte)) ptr))
 
 
 
