@@ -1,4 +1,4 @@
-#lang bf-demo
+#lang reader "reader.rkt"
 #|
 first string is 11 increments and 3 decrements = 8
 of the current byte
@@ -11,5 +11,6 @@ break out of loop
 . print out
 second byte is 64 and the char that 64 represents is @
 |#
+blasdflkasdfasdkl ; will get thrown out by tokenizer
 ++++-+++-++-++[>++++-+++-++-++<-]>.
 
