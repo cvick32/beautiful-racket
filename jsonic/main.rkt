@@ -6,11 +6,11 @@
   (define (get-info port src-mod src-line src-col src-pos)
     (define (handle-query key default)
       (case key
-        #;[(color-lexer)
+        [(color-lexer)
          (dynamic-require 'jsonic/colorer 'color-jsonic)]
         #;[(drracket:indentation)
          (dynamic-require 'jsonic/indenter 'indent-jsonic)]
         #;[(drracket:toolbar-buttons)
          (dynamic-require 'jsonic/buttons 'button-list)]
         [else default]))
-    handle-query)
+    handle-query))
