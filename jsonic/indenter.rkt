@@ -29,10 +29,9 @@ indenter rules:
          (line-first-visible-char tbox current-line))
         (- prev-indent indent-width)]
        [else prev-indent])]))
-
 (provide
  (contract-out
-  [indent-jsonic (((is-a?/c text%))
+  [indent-jsonic (((is-a?/c text%)) 
                   (exact-nonnegative-integer?) . ->* .
                   exact-nonnegative-integer?)]))
 
