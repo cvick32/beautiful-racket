@@ -11,3 +11,44 @@
   (strip-bindings
    #`(module wires-mod wires/main
        #,@wire-datums)))
+
+; EXPANDER CODE
+
+(provide #%module-begin)
+
+(define-macro-cases wire
+  [(wire VAL -> ID)
+   #'(define/display (ID) (val ARG))]
+  [(wire OP ARG -> ID)
+   #'(wire (OP (val ARG)) -> ID)]
+  [(wire ARG1 OP ARG2 -> ID)
+   #'(wire (OP (val ARG1) (val ARG2)) -> ID)]
+  [else #'(void)])
+(provide wire)
+
+(define-macro (define/display (ID) BODY)
+  #'(begin
+      (define (ID) BODY)
+      (module+ main
+        (displayln (format "~a: ~a " 'ID (ID))))))
+
+
+(define val ; 'let over lambda' design, allows us to create val-cache only once and access it every time we call val
+  (let ([val-cache (make-hash)]) ; but val-cache is not visible outside the definition
+    (lambda (num-or-wire)
+      (if (number? num-or-wire)
+          num-or-wire
+          (hash-ref! val-cache num-or-wire num-or-wire)))))
+
+(define (mod-16bit x) (modulo x 65536))
+(define-macro (define-16bit ID PROC-ID)
+  #'(define ID (compose1 mod-16bit PROC-ID)))
+
+(define-16bit AND bitwise-and)
+(define-16bit OR bitwise-or)
+(define-16bit NOT bitwise-not)
+(define-16bit LSHIFT arithmetic-shift)
+(define (RSHIFT x y) (LSHIFT x (- y)))
+(provide AND OR NOT LSHIFT RSHIFT)
+
+
