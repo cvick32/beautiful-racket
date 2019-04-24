@@ -1,10 +1,9 @@
 #lang br/quicklang
 
-; READER CODE
 (module+ reader
   (provide read-syntax))
 
-(define (read-syntax name port)
+(define (read-syntax path port)
   (define wire-datums
     (for/list ([wire-str (in-lines port)])
       (format-datum '(wire ~a) wire-str)))
@@ -12,12 +11,10 @@
    #`(module wires-mod wires/main
        #,@wire-datums)))
 
-; EXPANDER CODE
-
 (provide #%module-begin)
 
 (define-macro-cases wire
-  [(wire VAL -> ID)
+  [(wire ARG -> ID)
    #'(define/display (ID) (val ARG))]
   [(wire OP ARG -> ID)
    #'(wire (OP (val ARG)) -> ID)]
@@ -30,11 +27,14 @@
   #'(begin
       (define (ID) BODY)
       (module+ main
-        (displayln (format "~a: ~a " 'ID (ID))))))
+        (displayln (format "~a: ~a" 'ID (ID))))))
 
-
-(define val ; 'let over lambda' design, allows us to create val-cache only once and access it every time we call val
-  (let ([val-cache (make-hash)]) ; but val-cache is not visible outside the definition
+; 'let over lambda' design, allows us to create
+;    val-cache only once and access it every time
+;    we call val  but val-cache is not visible outside
+;    the definition
+(define val
+  (let ([val-cache (make-hash)])
     (lambda (num-or-wire)
       (if (number? num-or-wire)
           num-or-wire
@@ -45,10 +45,8 @@
   #'(define ID (compose1 mod-16bit PROC-ID)))
 
 (define-16bit AND bitwise-and)
-(define-16bit OR bitwise-or)
+(define-16bit OR bitwise-ior)
 (define-16bit NOT bitwise-not)
 (define-16bit LSHIFT arithmetic-shift)
 (define (RSHIFT x y) (LSHIFT x (- y)))
 (provide AND OR NOT LSHIFT RSHIFT)
-
-
