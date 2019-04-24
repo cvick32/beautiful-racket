@@ -1,11 +1,13 @@
-#lang br
+#lang br/quicklang
 
-(module reader br
-  (require wires/parser
-           wires/tokenizer)
-  (provide read-syntax)
-  (define (read-syntax name port)
-    (define parse-tree (parse (tokenize port)))
-    (strip-bindings
-     #`(module dsl-mod-name wires/expander
-         #,@parse-tree))))
+; READER CODE
+(module+ reader
+  (provide read-syntax))
+
+(define (read-syntax name port)
+  (define wire-datums
+    (for/list ([wire-str (in-lines port)])
+      (format-datum '(wire ~a) wire-str)))
+  (strip-bindings
+   #`(module wires-mod wires/main
+       #,@wire-datums)))
