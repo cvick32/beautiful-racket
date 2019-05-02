@@ -6,4 +6,4 @@
 60 print 'three' : print 1.0 + 3
 70 goto 11. + 18.5 + .5
 10 print "o" ; "n" ; "e"
-20 print : goto 6000.0 : end
+20 print : print 6000.0 : end
