@@ -1,9 +1,6 @@
 #lang basic
-30 rem print 'ignored'
-35
-50 print "never gets here"
-40 end
-60 print 'three' : print 1.0 + 3
-70 goto 11. + 18.5 + .5
-10 print "o" ; "n" ; "e"
-20 print : print 6000.0 : end
+10 let x = "foo"
+20 y = 42
+30 let z = x
+40 input i
+50 print z ; y + y + 10 ; x ; i
