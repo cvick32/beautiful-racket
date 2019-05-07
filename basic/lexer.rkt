@@ -3,7 +3,8 @@
 
 (define-lex-abbrev digits (:+ (char-set "0123456789")))
 
-(define-lex-abbrev reserved-terms (:or "print" "goto" "end" "+" ":" ";" "let" "=" "input"))
+(define-lex-abbrev reserved-terms (:or "print" "goto" "end" "+"
+":" ";" "let" "=" "input" "-" "*" "/" "^" "mod" "(" ")"))
 
 (define basic-lexer
   (lexer-srcloc
